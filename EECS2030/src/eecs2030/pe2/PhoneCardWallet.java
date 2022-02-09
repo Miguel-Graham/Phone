@@ -1,0 +1,210 @@
+package eecs2030.pe2;
+
+import java.util.HashSet;
+import java.util.Set;
+/* PLEASE DO NOT MODIFY A SINGLE STATEMENT IN THE TEXT BELOW.
+READ THE FOLLOWING CAREFULLY AND FILL IN THE GAPS
+
+I hereby declare that all the work that was required to 
+solve the following problem including designing the algorithms
+and writing the code below, is solely my own and that I received
+no help in creating this solution and I have not discussed my solution 
+with anybody. I affirm that I have read and understood
+the Senate Policy on Academic honesty at 
+https://secretariat-policies.info.yorku.ca/policies/academic-honesty-senate-policy-on/
+and I am well aware of the seriousness of the matter and the penalties that I will face as a 
+result of committing plagiarism in this assignment.
+
+BY FILLING THE GAPS,YOU ARE SIGNING THE ABOVE STATEMENTS.
+
+Full Name:Miguel Graham
+Student Number:216595449
+Course Section:Z
+*/
+/**
+ * A class that represents a wallet of phone cards.
+ * Such a wallet has a name and a composed set of phone cards.
+ * @author migue
+ *
+ */
+
+public class PhoneCardWallet {
+	
+ private String name;
+ private Set<PhoneCard> cardSet;
+
+    /**
+     * Create a PhoneCardWallet with the given name and an empty set of phone cards. 
+     * @param name The wallet's name.
+     * @pre. name is not null.
+     */
+	public PhoneCardWallet(String name) {
+		/*sets the current object's name to the passed name*/
+		this.name = name;
+		/*creates an empty card set*/
+		this.cardSet = new HashSet<PhoneCard>();
+	}
+	
+	/**
+	 * Create a PhoneCardWallet with the given name and set of phone cards.
+	 * A shallow copy of the set of cards is stored in the wallet.
+	 * @param name The wallet's name.
+	 * @param cardSet The set of phone cards to be included in the wallet.
+	 */
+	public PhoneCardWallet(String name, Set<PhoneCard> cardSet) {
+	    /*Creates a new string and copy name sting while assigning it to the current object's name */
+		this.name = new String (name); 
+		/*Creates a new set and assign each element to the new set*/
+		Set<PhoneCard> shallow = new HashSet<PhoneCard>();
+	   for (PhoneCard p: cardSet) {
+		   shallow.add(p);
+	   }
+	   /*returns the set that was created*/
+	   this.cardSet = shallow;
+	}
+	
+	/**
+	 * Get the name of this wallet.
+	 * @return the name of this wallet.
+	 */
+	public String getName() {
+		/*returns the name of the current object*/
+		return this.name;
+	}
+	
+	/**
+	 * Get the set of cards contained in this wallet.
+	 * A shallow copy of the set of cards in the wallet is returned.
+	 * @return the set of cards contained in this wallet.
+	 */
+	public Set<PhoneCard> getCardSet(){
+		/*Creates a new set and assign each element to the new set*/
+		Set<PhoneCard> shallow = new HashSet<PhoneCard>();
+		   for (PhoneCard p: cardSet) {
+			   shallow.add(p);
+		   }
+		   /*returns the set that was created*/
+		return shallow;
+	}
+	
+	/**
+	 * Add the given phone card to this wallet.
+	 * @param card the phone card to be added.
+	 * @pre. card is not null
+	 */
+	public void addCard(PhoneCard card) {
+		/*Adds the passed card to the set*/
+		this.cardSet.add(card);
+	}
+	
+	/**
+	 * Remove the given phone card from this wallet.
+	 * @param card the phone card to be removed.
+	 * @pre. card is not null
+	 */
+	public void removeCard(PhoneCard card) {
+		/*removes the passed card from the set*/
+		this.cardSet.remove(card);
+	}
+	
+	/**
+	 * Obtain the set of cards contained in this wallet that could be used
+	 * to make a call to the given zone with the given cost.
+	 * The method returns the set of all cards in the wallet that allow a call
+	 * to the given zone and have a balance greater or equal to cost.
+	 * @param zone the zone of the call
+	 * @param cost the cost of the call
+	 * @return the set of cards contained in this wallet that could be used to make such a call.
+	 */
+	public Set<PhoneCard> filter(CallZone zone, double cost){
+		/*Creates a new set*/
+		Set<PhoneCard> search = new HashSet<PhoneCard>();
+		/*adds a card to the created set if the zone is allowed in that card and the balance of the 
+		 * card is greater than the cost*/
+		for(PhoneCard p: cardSet) {
+			if(p.isAllowed(zone)&& p.getBalance()>=cost) {
+				search.add(p);
+			}
+		}
+	    /*returns the set that was created*/
+		return search;
+	}
+	
+	/**
+	 * Create a string representation of the wallet.
+	 * The string is "PhoneCardWallet named " followed by the wallet's name followed by" with cards "
+	 * followed by the wallet's card set's string representation.
+	 * @return the string representation of the wallet.
+	 */
+	@Override
+	public String toString() {
+		/*Creates a String*/
+		String str;
+		str= "PhoneCardWallet named " + this.getName() + " with cards ";
+		/*Adds each cards string representation to the string*/
+		for(PhoneCard p: cardSet) {
+			str = str + p.toString()+", ";
+		}
+		return str;
+		
+	}
+	
+    /**
+     * Creates a hash code for the object.
+     * The hash code is generated by considering the wallet's name and card set.
+     * @return the object's hash code
+     */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		/*Creates an integer variable that will hold the hashcode*/
+		int result = 1;
+		/*multiplies the cardset's hashcode by a prime number then assigning it to the declared integer variable
+		 * if the card set is null 0 is assigned*/
+		result = prime * result + ((cardSet == null) ? 0 : cardSet.hashCode());
+		/*multiplies the name's hashcode by a prime number then assigning it to the declared integer variable
+		 * if the card set is null 0 is assigned*/
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+	
+    /**
+     * Compares the wallet with another object for equality.
+     * Two PhoneCardWallet instances are equal if and only if 
+     * their names are equal and their sets of cards are equal.
+     * @param obj the object to compare with for equality.
+     * @return true if the wallet and object are equal; false otherwise.
+     */
+	@Override
+	public boolean equals(Object obj) {
+		/*returns true if the objects are the same*/
+		if (this == obj)
+			return true;
+		/*returns false if the passed object is null*/
+		if (obj == null)
+			return false;
+		/*returns false if the objects' ore of different types*/
+		if (getClass() != obj.getClass())
+			return false;
+		PhoneCardWallet other = (PhoneCardWallet) obj;
+		/*returns false if the cardset is null*/
+		if (cardSet == null) {
+			if (other.cardSet != null)
+				return false;
+		/*if this object's cardset does not equal passed object's cardset
+		 * false is returned*/
+		} else if (!cardSet.equals(other.cardSet))
+			return false;
+		/*returns false if name is null*/
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		/*if current object's name does not equal passed object's name
+		 * false is returned*/	
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+	
+
+}

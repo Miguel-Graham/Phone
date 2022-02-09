@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"eecs2030.pe2","c":"SmartAmericas10Card","l":"SmartAmericas10Card()","u":"%3Cinit%3E()"}];updateSearchResults();
